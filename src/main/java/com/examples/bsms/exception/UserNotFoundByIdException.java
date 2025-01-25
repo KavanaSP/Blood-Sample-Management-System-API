@@ -1,7 +1,10 @@
 package com.examples.bsms.exception;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
 public class UserNotFoundByIdException extends RuntimeException {
-  public UserNotFoundByIdException(String message) {
-    super(message);
-  }
+   private final String message;
 }

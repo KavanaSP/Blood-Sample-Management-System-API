@@ -1,7 +1,10 @@
 package com.examples.bsms.exception;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public class BloodBankNotFoundByIdException extends RuntimeException {
-  public BloodBankNotFoundByIdException(String message) {
-    super(message);
-  }
+    private final String message;
 }

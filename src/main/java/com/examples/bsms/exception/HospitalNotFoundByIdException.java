@@ -1,7 +1,11 @@
 package com.examples.bsms.exception;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
 public class HospitalNotFoundByIdException extends RuntimeException {
-  public HospitalNotFoundByIdException(String message) {
-    super(message);
-  }
+
+    private final String message;
 }
