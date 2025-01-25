@@ -11,12 +11,10 @@ public interface UserService {
 
     UserResponse findUserById(int userId);
 
-    UserResponse updateUser(UserRequest userRequest, int userId);
 
-    UserResponse promteUserToAdmin(int userId);
+    UserResponse updateUserById(UserRequest userRequest, int userId);
 
+    UserResponse promoteUserToAdmin(int userId);
 
-    String promteUserToAdmin(int userId, int hospitalId);
-
-    AdminResponse promteUserAsAdmin(UserRequest userRequest, int userId);
+    AdminResponse promoteUserAsAdmin(UserRequest userRequest, int userId);
 }

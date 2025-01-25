@@ -34,7 +34,6 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userRepository.save(user);
         return this.mapToUserResponse(user);
-
     }
 
     private  User maptoUser(UserRequest userRequest,User user) {
@@ -59,7 +58,7 @@ public class UserServiceImpl implements UserService {
                 .bloodGroup(user.getBloodGroup())
                 .gender(user.getGender())
                 .verified(user.isVerified())
-                .lastDonateAt(user.getLastDonateAt())
+                .lastDonateAt(user.getLastDonatedAt())
                 .build();
     }
 
@@ -77,7 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse updateUser(UserRequest userRequest, int userId) {
+    public UserResponse updateUserById(UserRequest userRequest, int userId) {
         Optional<User> optional =  userRepository.findById(userId);
         if(optional.isEmpty())
             throw new UserNotFoundByIdException("Failed to updated to user");
@@ -88,38 +87,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse promteUserToAdmin(int userId) {
-        return null;
+    public UserResponse promoteUserToAdmin(int userId) {
+        Optional<User> optional=userRepository.findById(userId);
+        if (optional.isEmpty()){
+            throw new UserNotFoundByIdException("Failed to update");
+        }
+        User user=optional.get();
+        user.setRole(UserRole.ADMIN);
+        userRepository.save(user);
+        Admin admin=new Admin();
+        admin.setUser(user);
+        return this.mapToUserResponse(user);
     }
 
     @Override
-    public String promteUserToAdmin(int userId, int hospitalId) {
-       User user = userRepository.findById(userId)
-               .orElseThrow();
-
-        Hospital hospital = hospitalRepository.findById(hospitalId)
-                .orElseThrow();
-
-       if (user.getRole() == UserRole.ADMIN) {
-           Admin admin = adminRepository.findById(user).orElseThrow();
-           adminRepository.save(admin);
-
-           return  "admin details updated successfully";
-       }
-
-       user.setRole(UserRole.ADMIN);
-       userRepository.save(user);
-
-        Admin admin = Admin.builder()
-                .user(user)
-                .build();
-        adminRepository.save(admin);
-
-        return "User promoted to admin successfully";
-    }
-
-    @Override
-    public AdminResponse promteUserAsAdmin(UserRequest userRequest, int userId) {
+    public AdminResponse promoteUserAsAdmin(UserRequest userRequest, int userId) {
         User user = new User();
         user.setRole(UserRole.ADMIN);
         user = this.maptoUser(userRequest,user);

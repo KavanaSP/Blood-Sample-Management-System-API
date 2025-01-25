@@ -13,5 +13,6 @@ public interface BloodBankService {
 
     BloodBankResponse updateBloodBank(BloodBankRequest bloodBankRequest, int bankId);
 
+
 //    List<BloodBankResponse> findAll();
 }
